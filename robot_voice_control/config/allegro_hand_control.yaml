@@ -7,29 +7,56 @@
 #
 #  allegro_hand_control:
 #    topics:
-#      - basic_topic
-#      - some/complicated/topic
+#      - basic_topic: String
+#      - some/complicated/topic: String
+#      - int_topic: Int
 #    basic_topic:
 #      input1: output1
 #      long input with spaces : output message with spaces
 #    some/complicated/topic:
 #      input1: output1
 #      input/with/slashes: output/with/slashes
+#    int_topic:
+#      five: 5
+#      ten: 10
 #
 # NOTE: allegro_hand_control is the 'top-level' control specification
-# container. All valid topics must be listed. Each topic can then have several
-# input/output mappings.
+# container. All valid topics must be listed along with their types. Each topic
+# can then have several input/output mappings. The topics should be relative
+# (not start with a slash).
+#
+# The topic is what the robot is listening to for settings the behavior (there
+# can be multiple). The input string is the user's natural language command
+# (it can be several words). The output is the internal string representation
+# of the command (for example, the grasp name to be executed). Note the output
+# string cannot be empty.
 #
 # All listed topics must have at least one input-output mapping, and any
-# input-output mapping must have its topic listed in the topics list.
+# input-output mapping must have its topic listed in the topics list. Some
+# strings (notably on/off) must be quoted.
 
 allegro_hand_control:
+  # List of topics
   topics:
-    - basic_topic
-    - some/complicated/topic
-  basic_topic:
-    input1: output1
-    long input with spaces : output message with spaces
-  some/complicated/topic:
-    input1: output1
-    input/with/slashes: output/with/slashes
+    - /allegroHand/lib_cmd : String
+    - /allegroHand/envelop_torque : Float32
+  /allegroHand/lib_cmd:
+    'off': 'off'
+    stop: 'off'
+    'on': home
+    home: home
+    ready: ready
+    grasp: grasp_3
+    three finger grasp: grasp_3
+    four finger grasp: grasp_4
+    pinch: pinch_it
+    pinch index: pinch_it
+    pinch middle: pinch_mt
+    envelop: envelop
+    grab: envelop
+    gravity: gravcomp
+    gravity compenstation: gravcomp
+  /allegroHand/envelop_torque:
+    set torque half: 0.5
+    set torque full: 1.0
+    set torque zero: 0.0
