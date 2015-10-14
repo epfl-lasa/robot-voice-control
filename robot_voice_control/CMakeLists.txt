@@ -28,9 +28,6 @@ catkin_package(
 ## Install ##
 #############
 
-message("hello")
-message("${CATKIN_PACKAGE_BIN_DESTINATION}")
-
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
@@ -52,4 +49,4 @@ install(PROGRAMS
 # endif()
 
 ## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+catkin_add_nosetests(nodes/test)
