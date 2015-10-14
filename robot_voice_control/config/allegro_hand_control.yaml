@@ -1,0 +1,35 @@
+# Message-based natural language control of the allegro hand.
+#
+# This config file specifies the translation of input (NL) to output (a message
+# on a topic). Multiple commands can use the same topic.
+
+# Basic example:
+#
+#  allegro_hand_control:
+#    topics:
+#      - basic_topic
+#      - some/complicated/topic
+#    basic_topic:
+#      input1: output1
+#      long input with spaces : output message with spaces
+#    some/complicated/topic:
+#      input1: output1
+#      input/with/slashes: output/with/slashes
+#
+# NOTE: allegro_hand_control is the 'top-level' control specification
+# container. All valid topics must be listed. Each topic can then have several
+# input/output mappings.
+#
+# All listed topics must have at least one input-output mapping, and any
+# input-output mapping must have its topic listed in the topics list.
+
+allegro_hand_control:
+  topics:
+    - basic_topic
+    - some/complicated/topic
+  basic_topic:
+    input1: output1
+    long input with spaces : output message with spaces
+  some/complicated/topic:
+    input1: output1
+    input/with/slashes: output/with/slashes
