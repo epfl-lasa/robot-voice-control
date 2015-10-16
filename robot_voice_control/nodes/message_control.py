@@ -7,6 +7,9 @@
 #
 # At startup, loads the ROS parameter that specify which topics and messages
 # should be mapped to which command.
+#
+# Note that two commands cannot be shared between different topics (e.g,
+# 'stop' cannot map to different commands on two topics).
 
 import rospy
 from collections import defaultdict
@@ -21,23 +24,19 @@ class LanguageToMessageTranslator(object):
 
         self.nl_command_topic = '/nl_command_parsed'
 
-
         # map of nl_command -> (topic, message)
-        self.nl_command_map = {'home': ('/allegroHand/lib_cmd', 'home'),
-                               'pinch': ('/allegroHand/lib_cmd', 'pinch_it'),
-                               'gravity compensation': ('/allegroHand/lib_cmd',
-                                                        'gravcomp')
-                               }
+        self._nl_command_map = {}
         rospy.Subscriber(self.nl_command_topic, String, self.nl_command_callback)
 
     def load_nl_command_map(self, control_param_name):
 
+        rospy.loginfo('Looking for parameter: {}'.format(control_param_name))
         if not rospy.has_param(control_param_name):
-            rospy.logerr('Cannot proceed without the control parameter: {}'.format(control_param_name))
+            rospy.logerr('Cannot proceed without the control parameter: {}'.
+                         format(control_param_name))
             rospy.signal_shutdown('Cannot proceed without parameter.')
 
         param = rospy.get_param(control_param_name)
-        rospy.loginfo('param: {}'.format(param))
         assert 'topics' in param
 
         # Convert a list of dictionaries to a list of tuples.
@@ -53,9 +52,18 @@ class LanguageToMessageTranslator(object):
             tmp = LanguageToMessageTranslator.parse_command_mapping(
                 param_topic_name, topic_type_str, command_mapping)
 
-            self.nl_command_map.update(tmp)
+            self._nl_command_map.update(tmp)
 
         rospy.loginfo('NL control running, listening to topic: {}.'.format(self.nl_command_topic))
+
+    def print_command_map(self, show_token=False):
+        rospy.loginfo("All available commands:")
+        for (command, (topic, message)) in self._nl_command_map.iteritems():
+            if show_token:
+                rospy.loginfo('  {} -> {}'.format(command, message.data))
+            else:
+                rospy.loginfo('  {}'.format(command))
+        rospy.loginfo('That is all.')
 
     @classmethod
     def parse_command_mapping(cls, topic_name, topic_type_str, command_mapping):
@@ -100,9 +108,9 @@ class LanguageToMessageTranslator(object):
     def nl_command_callback(self, msg):
         command = msg.data
 
-        if command in self.nl_command_map:
+        if command in self._nl_command_map:
             rospy.loginfo('Heard command: {}'.format(command))
-            (topic, message) = self.nl_command_map[command]
+            (topic, message) = self._nl_command_map[command]
             rospy.loginfo('Sending command; topic[{}], message[{}]'.format(
                 topic, message))
 
@@ -118,7 +126,11 @@ def run():
 
     translator = LanguageToMessageTranslator()
 
-    ####rospy.spin()
+    translator.load_nl_command_map('allegro_hand_control')
+
+    translator.print_command_map()
+
+    rospy.spin()
 
 
 if __name__ == '__main__':

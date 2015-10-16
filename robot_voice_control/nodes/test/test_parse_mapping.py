@@ -45,6 +45,7 @@ class TestCase(unittest.TestCase):
     def testSetup(self):
         self.setupTranslator()
         self.assertIsNotNone(self.translator)
+        self.assertIsNotNone(self.translator.nl_command_map)
 
     def test_parse_command_map_wrong_type(self):
         not_a_type = 'NotAType'
