@@ -2,6 +2,7 @@
 
 import unittest
 
+import rospy
 import rostest
 import std_msgs
 import genpy
@@ -45,7 +46,10 @@ class TestCase(unittest.TestCase):
     def testSetup(self):
         self.setupTranslator()
         self.assertIsNotNone(self.translator)
-        self.assertIsNotNone(self.translator.nl_command_map)
+        self.assertIsNotNone(self.translator._nl_command_map)
+        self.assertFalse(self.translator._nl_command_map)  # empty
+        self.assertIsNotNone(self.translator._publisher_map)
+        self.assertFalse(self.translator._publisher_map)  # empty
 
     def test_parse_command_map_wrong_type(self):
         not_a_type = 'NotAType'
@@ -112,7 +116,6 @@ class TestCase(unittest.TestCase):
 
         for cmd in commands:  # All commands are in the map
             self.assertIn(cmd, ret)
-
             # Inspect each tuple: (topic, message)
             x = ret[cmd]
             self.assertEqual(2, len(x))
@@ -156,6 +159,61 @@ class TestCase(unittest.TestCase):
             self.assertIsInstance(x[1], std_msgs.msg.Float32)
 
         self.assertEqual(3.14159, ret['input'][1].data)
+
+    def test_get_publisher_string(self):
+        topic = 'basic_topic'
+        topic_type_str = self.topics_and_types[topic]
+
+        pub_map = LanguageToMessageTranslator.get_publisher(
+            topic, topic_type_str)
+
+        self.assertIsNotNone(pub_map)
+        self.assertEqual(1, len(pub_map))
+        self.assertTrue(topic in pub_map)
+
+        pub = pub_map[topic]
+        self.assertIsInstance(pub, rospy.Publisher)
+        self.assertEqual('std_msgs/String', pub.type)
+
+    def test_get_publisher_int(self):
+        topic = 'more/complicated/topic'
+        topic_type_str = self.topics_and_types[topic]
+
+        pub_map = LanguageToMessageTranslator.get_publisher(
+            topic, topic_type_str)
+
+        self.assertIsNotNone(pub_map)
+        self.assertEqual(1, len(pub_map))
+        self.assertTrue(topic in pub_map)
+
+        pub = pub_map[topic]
+        self.assertIsInstance(pub, rospy.Publisher)
+        self.assertEqual('std_msgs/Int32', pub.type)
+
+    def test_get_publisher_float(self):
+        topic = '/global/topic'
+        topic_type_str = self.topics_and_types[topic]
+
+        pub_map = LanguageToMessageTranslator.get_publisher(
+            topic, topic_type_str)
+
+        self.assertIsNotNone(pub_map)
+        self.assertEqual(1, len(pub_map))
+        self.assertTrue(topic in pub_map)
+
+        pub = pub_map[topic]
+        self.assertIsInstance(pub, rospy.Publisher)
+        self.assertEqual('std_msgs/Float32', pub.type)
+
+    def test_get_publisher_unknown(self):
+        topic = 'unknown_type'
+        topic_type_str = self.topics_and_types[topic]
+
+        pub_map = LanguageToMessageTranslator.get_publisher(
+            topic, topic_type_str)
+
+        self.assertIsNotNone(pub_map)
+        self.assertEqual(0, len(pub_map))
 
 
 if __name__ == '__main__':

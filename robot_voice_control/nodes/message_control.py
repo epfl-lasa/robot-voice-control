@@ -23,10 +23,13 @@ class LanguageToMessageTranslator(object):
     def __init__(self):
 
         self.nl_command_topic = '/nl_command_parsed'
+        rospy.Subscriber(self.nl_command_topic, String, self.nl_command_callback)
 
         # map of nl_command -> (topic, message)
         self._nl_command_map = {}
-        rospy.Subscriber(self.nl_command_topic, String, self.nl_command_callback)
+
+        # Map
+        self._publisher_map = {}
 
     def load_nl_command_map(self, control_param_name):
 
@@ -49,10 +52,14 @@ class LanguageToMessageTranslator(object):
                 param_topic_name))
             command_mapping = rospy.get_param(param_topic_name)
 
-            tmp = LanguageToMessageTranslator.parse_command_mapping(
+            cmd_map = LanguageToMessageTranslator.parse_command_mapping(
                 param_topic_name, topic_type_str, command_mapping)
 
-            self._nl_command_map.update(tmp)
+            self._nl_command_map.update(cmd_map)
+
+            pub_map = LanguageToMessageTranslator.get_publisher(
+                param_topic_name, topic_type_str)
+            self._publisher_map.update(pub_map)
 
         rospy.loginfo('NL control running, listening to topic: {}.'.format(self.nl_command_topic))
 
@@ -84,7 +91,7 @@ class LanguageToMessageTranslator(object):
 
         msg_t = cls.string_to_type[topic_type_str]
         if not msg_t:
-            rospy.logwarn('Message type {} is not know, skipping it'.format(
+            rospy.logwarn('Message type {} is not known, skipping it'.format(
                 topic_type_str))
             return ret  # Empty dict.
 
@@ -104,6 +111,32 @@ class LanguageToMessageTranslator(object):
                                  [('String', std_msgs.msg.String),
                                   ('Int32', std_msgs.msg.Int32),
                                   ('Float32', std_msgs.msg.Float32)])
+    @classmethod
+    def get_publisher(cls, topic_name, topic_type_str):
+        """
+        Create a publisher for the given topic and type (convert the type string
+        to the message type). Returns a dict{topic->Publisher).
+
+        If the message type is unknown return an empty dict.
+
+        :param topic_name: Topic (string)
+        :param topic_type_str: Message type (string)
+        :return: dict{basestr, rospy.Publisher}
+        """
+
+        # Dict allows us to call dict.update() and join stuff even if the
+        # result is empty.
+        ret = {}
+
+        msg_t = cls.string_to_type[topic_type_str]
+        if not msg_t:
+            rospy.logwarn('Message type {} is not known, skipping it'.format(
+                topic_type_str))
+            return ret  # Empty dict.
+
+        pub = rospy.Publisher(topic_name, msg_t, queue_size=1)
+        ret[topic_name] = pub
+        return ret
 
     def nl_command_callback(self, msg):
         command = msg.data
