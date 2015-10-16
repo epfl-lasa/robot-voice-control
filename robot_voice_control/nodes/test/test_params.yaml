@@ -1,0 +1,19 @@
+# Parameter file for unit tests
+
+test_topics:
+  topics:
+    - basic_topic : String
+    - more/complicated/topic: Int32
+    - /global/topic : Float32
+    - unknown_type : Unknown
+  basic_topic:
+    input: output
+    input with spaces: output with spaces
+  more/complicated/topic:
+    input: 42
+  /global/topic:
+    input: 3.14159
+  unknown_type:
+    input: does not matter
+  unknown_topic:
+    input: does not matter

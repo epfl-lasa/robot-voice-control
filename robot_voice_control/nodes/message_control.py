@@ -14,11 +14,12 @@ from collections import defaultdict
 import std_msgs
 from std_msgs.msg import String
 
+
 class LanguageToMessageTranslator(object):
 
     def __init__(self):
 
-        nl_command_topic = '/nl_command_parsed'
+        self.nl_command_topic = '/nl_command_parsed'
 
 
         # map of nl_command -> (topic, message)
@@ -27,7 +28,7 @@ class LanguageToMessageTranslator(object):
                                'gravity compensation': ('/allegroHand/lib_cmd',
                                                         'gravcomp')
                                }
-        rospy.Subscriber(nl_command_topic, String, self.nl_command_callback)
+        rospy.Subscriber(self.nl_command_topic, String, self.nl_command_callback)
 
     def load_nl_command_map(self, control_param_name):
 
@@ -45,7 +46,8 @@ class LanguageToMessageTranslator(object):
         for (param_topic_name, topic_type_str) in topics_and_types:
             if not rospy.has_param(param_topic_name):
                 rospy.logerr('Expected parameter {}'.format(param_topic_name))
-            rospy.loginfo('Getting all command maps that go on topic {}'.format(param_topic_name))
+            rospy.loginfo('Getting all command maps that go on topic {}'.format(
+                param_topic_name))
             command_mapping = rospy.get_param(param_topic_name)
 
             tmp = LanguageToMessageTranslator.parse_command_mapping(
@@ -53,16 +55,36 @@ class LanguageToMessageTranslator(object):
 
             self.nl_command_map.update(tmp)
 
-
-        rospy.loginfo('NL control running, listening to topic: {}.'.format(nl_command_topic))
+        rospy.loginfo('NL control running, listening to topic: {}.'.format(self.nl_command_topic))
 
     @classmethod
     def parse_command_mapping(cls, topic_name, topic_type_str, command_mapping):
+        """
+
+        :param topic_name:
+        :param topic_type_str:
+        :param command_mapping: dict[basestring, Type] The mapping from
+        natural language -> control token (expressed in whatever type).
+        :return:
+
+        This returns a map of:
+        dict{command -> (topic, message)}
+        where the command is the string to match, the topic is a string, and the
+        message is the actual message type (ready to publish).
+        """
         ret = {}
 
         msg_t = cls.string_to_type[topic_type_str]
         if not msg_t:
-            return ret
+            rospy.logwarn('Message type {} is not know, skipping it'.format(
+                topic_type_str))
+            return ret  # Empty dict.
+
+        # Make a command map for all commands, turning them into the correct
+        # message type (e.g., std_msgs.String).
+        for (nl_command, token) in command_mapping.items():
+            token_msg = msg_t(token)  # Create an actual publishable message.
+            ret[nl_command] = (topic_name, token_msg)
 
         return ret
 
@@ -88,7 +110,7 @@ class LanguageToMessageTranslator(object):
             publisher = rospy.Publisher(topic, String, queue_size=1)
             publisher.publish(message)
         else:
-            rospy.loginfo('Unknown NL command: {}'.format(command))
+            rospy.logwarn('Unknown NL command: {}'.format(command))
 
 
 def run():
