@@ -29,7 +29,8 @@
 # can be multiple). The input string is the user's natural language command
 # (it can be several words). The output is the internal string representation
 # of the command (for example, the grasp name to be executed). Note the output
-# string cannot be empty.
+# string cannot be empty, and the input string cannot be shared between
+# different topics.
 #
 # All listed topics must have at least one input-output mapping, and any
 # input-output mapping must have its topic listed in the topics list. Some
