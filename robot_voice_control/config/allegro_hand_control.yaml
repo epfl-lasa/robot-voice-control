@@ -23,7 +23,9 @@
 # NOTE: allegro_hand_control is the 'top-level' control specification
 # container. All valid topics must be listed along with their types. Each topic
 # can then have several input/output mappings. The topics should be relative
-# (not start with a slash).
+# (not start with a slash), so rosparam get allegro_hand_control/basic_topic
+# should successfully return the list of available commands (in the above
+# example).
 #
 # The topic is what the robot is listening to for settings the behavior (there
 # can be multiple). The input string is the user's natural language command
@@ -39,9 +41,9 @@
 allegro_hand_control:
   # List of topics
   topics:
-    - /allegroHand/lib_cmd : String
-    - /allegroHand/envelop_torque : Float32
-  /allegroHand/lib_cmd:
+    - allegroHand/lib_cmd : String
+    - allegroHand/envelop_torque : Float32
+  allegroHand/lib_cmd:
     'off': 'off'
     stop: 'off'
     'on': home
@@ -57,7 +59,7 @@ allegro_hand_control:
     grab: envelop
     gravity: gravcomp
     gravity compensation: gravcomp
-  /allegroHand/envelop_torque:
+  allegroHand/envelop_torque:
     set torque half: 0.5
     set torque full: 1.0
     set torque zero: 0.0

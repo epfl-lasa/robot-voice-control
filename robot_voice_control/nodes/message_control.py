@@ -62,18 +62,32 @@ class LanguageToMessageTranslator(object):
 
         # Convert a list of dictionaries to a list of tuples.
         topics_and_types = [x.items()[0] for x in param['topics']]
-        rospy.loginfo('Available topics & types: {}'.format(topics_and_types))
+        rospy.loginfo('Desired topics & types: {}'.format(topics_and_types))
+        rospy.logdebug('Available parameters: {}'.format(
+            rospy.get_param_names()))
 
         for (param_topic_name, topic_type_str) in topics_and_types:
-            if not rospy.has_param(param_topic_name):
+
+            if param_topic_name and param_topic_name[0] == '/':
+                rospy.logwarn('Parameter {} is a global parameter, '
+                              'all parameters should be relative to: {}'.
+                              format(param_topic_name, control_param_name))
+                continue
+
+            # The relative parameter (the one we look for) is under the
+            # control_param_name and will contain all the commands.
+            relative_param_name = control_param_name + '/' + param_topic_name
+
+            if not rospy.has_param(relative_param_name):
                 rospy.logerr('Missing ROS parameter {}'.format(
-                    param_topic_name))
-                continue  # Do not die here.
+                    relative_param_name))
+                continue  # Do not die here, continue to next param.
 
             rospy.loginfo('Getting all commands for topic {}'.format(
                 param_topic_name))
-            command_mapping = rospy.get_param(param_topic_name)
+            command_mapping = rospy.get_param(relative_param_name)
 
+            # Note that the output topic is *not* relative.
             cmd_map = LanguageToMessageTranslator.parse_command_mapping(
                 param_topic_name, topic_type_str, command_mapping)
 
