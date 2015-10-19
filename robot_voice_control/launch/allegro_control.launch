@@ -40,6 +40,8 @@
           pkg="robot_voice_control"
           type="message_control.py"
           output="screen">
+        <remap from="/allegroHand/lib_cmd" to="/allegroHand_$(arg hand_num)/lib_cmd"/>
+        <remap from="/allegroHand/envelop_torque" to="/allegroHand_$(arg hand_num)/envelop_torque"/>
     </node>
 
     <!-- TODO: Make an allegro_hand_remapper.-->
