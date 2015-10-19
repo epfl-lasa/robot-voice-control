@@ -56,7 +56,7 @@ allegro_hand_control:
     envelop: envelop
     grab: envelop
     gravity: gravcomp
-    gravity compenstation: gravcomp
+    gravity compensation: gravcomp
   /allegroHand/envelop_torque:
     set torque half: 0.5
     set torque full: 1.0
