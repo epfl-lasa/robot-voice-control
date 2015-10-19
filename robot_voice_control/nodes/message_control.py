@@ -30,8 +30,25 @@ class LanguageToMessageTranslator(object):
 
         # Map
         self._publisher_map = {}
+        pass
+
+    # This defaultdict maps a string representation of the message type
+    # (what's stored inside the parameter server) to the actual message type.
+    # By default it returns None (instead of raising an exception) if the
+    # message type is unknown.
+    string_to_type = defaultdict(lambda: None,
+                                 [('String', std_msgs.msg.String),
+                                  ('Int32', std_msgs.msg.Int32),
+                                  ('Float32', std_msgs.msg.Float32)])
 
     def load_nl_command_map(self, control_param_name):
+        """
+        Load the command map and create ros publishers for each topic.
+
+        :param control_param_name: The ROS parameter name to load.
+        :return: nothing, updates self._nl_command_mapping and
+        self._publisher_map
+        """
 
         rospy.loginfo('Looking for parameter: {}'.format(control_param_name))
         if not rospy.has_param(control_param_name):
@@ -103,14 +120,6 @@ class LanguageToMessageTranslator(object):
 
         return ret
 
-    # This defaultdict maps a string representation of the message type
-    # (what's stored inside the parameter server) to the actual message type.
-    # By default it returns None (instead of raising an exception) if the
-    # message type is unknown.
-    string_to_type = defaultdict(lambda: None,
-                                 [('String', std_msgs.msg.String),
-                                  ('Int32', std_msgs.msg.Int32),
-                                  ('Float32', std_msgs.msg.Float32)])
     @classmethod
     def get_publisher(cls, topic_name, topic_type_str):
         """
@@ -142,13 +151,18 @@ class LanguageToMessageTranslator(object):
         command = msg.data
 
         if command in self._nl_command_map:
+
             rospy.loginfo('Heard command: {}'.format(command))
             (topic, message) = self._nl_command_map[command]
+
+            if topic not in self._publisher_map:
+                rospy.logwarn('No publisher for topic: {}'.format(topic))
+                return
+
             rospy.loginfo('Sending command; topic[{}], message[{}]'.format(
                 topic, message))
 
-            # NOTE It may be useful to start all the publishers at startup.
-            publisher = rospy.Publisher(topic, String, queue_size=1)
+            publisher = self._publisher_map[topic]
             publisher.publish(message)
         else:
             rospy.logwarn('Unknown NL command: {}'.format(command))
