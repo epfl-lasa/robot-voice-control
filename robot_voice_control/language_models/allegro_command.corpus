@@ -1,14 +1,17 @@
-robot
-okay
+okay robot
 
 on
 off
 ready
 home
+stop
 
 grasp
 grab
 envelop
+
+gravity
+gravity compensation
 
 three finger
 four finger grasp
