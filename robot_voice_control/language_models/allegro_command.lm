@@ -1,0 +1,109 @@
+Language model created by QuickLM on Fri Oct 16 11:02:27 EDT 2015
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 17 sentences and 22 words
+
+\data\
+ngram 1=22
+ngram 2=38
+ngram 3=26
+
+\1-grams:
+-0.8630 </s> -0.3010
+-0.8630 <s> -0.2329
+-2.0934 ENVELOP -0.2370
+-1.7924 FINGER -0.2288
+-2.0934 FOUR -0.2940
+-2.0934 FULL -0.2370
+-2.0934 GRAB -0.2370
+-1.7924 GRASP -0.2370
+-2.0934 HALF -0.2370
+-2.0934 HOME -0.2370
+-2.0934 INDEX -0.2370
+-2.0934 MIDDLE -0.2370
+-2.0934 OFF -0.2370
+-2.0934 OKAY -0.2370
+-2.0934 ON -0.2370
+-1.6163 PINCH -0.2288
+-2.0934 READY -0.2370
+-2.0934 ROBOT -0.2370
+-1.6163 SET -0.2904
+-2.0934 THREE -0.2940
+-1.6163 TORQUE -0.2904
+-2.0934 ZERO -0.2370
+
+\2-grams:
+-1.5315 <s> ENVELOP 0.0000
+-1.5315 <s> FOUR 0.0000
+-1.5315 <s> GRAB 0.0000
+-1.5315 <s> GRASP 0.0000
+-1.5315 <s> HOME 0.0000
+-1.5315 <s> OFF 0.0000
+-1.5315 <s> OKAY 0.0000
+-1.5315 <s> ON 0.0000
+-1.0544 <s> PINCH 0.0000
+-1.5315 <s> READY 0.0000
+-1.5315 <s> ROBOT 0.0000
+-1.0544 <s> SET 0.0000
+-1.5315 <s> THREE 0.0000
+-0.3010 ENVELOP </s> -0.3010
+-0.6021 FINGER </s> -0.3010
+-0.6021 FINGER GRASP 0.0000
+-0.3010 FOUR FINGER -0.1761
+-0.3010 FULL </s> -0.3010
+-0.3010 GRAB </s> -0.3010
+-0.3010 GRASP </s> -0.3010
+-0.3010 HALF </s> -0.3010
+-0.3010 HOME </s> -0.3010
+-0.3010 INDEX </s> -0.3010
+-0.3010 MIDDLE </s> -0.3010
+-0.3010 OFF </s> -0.3010
+-0.3010 OKAY </s> -0.3010
+-0.3010 ON </s> -0.3010
+-0.7782 PINCH </s> -0.3010
+-0.7782 PINCH INDEX 0.0000
+-0.7782 PINCH MIDDLE 0.0000
+-0.3010 READY </s> -0.3010
+-0.3010 ROBOT </s> -0.3010
+-0.3010 SET TORQUE 0.0000
+-0.3010 THREE FINGER -0.1761
+-0.7782 TORQUE FULL 0.0000
+-0.7782 TORQUE HALF 0.0000
+-0.7782 TORQUE ZERO 0.0000
+-0.3010 ZERO </s> -0.3010
+
+\3-grams:
+-0.3010 <s> ENVELOP </s>
+-0.3010 <s> FOUR FINGER
+-0.3010 <s> GRAB </s>
+-0.3010 <s> GRASP </s>
+-0.3010 <s> HOME </s>
+-0.3010 <s> OFF </s>
+-0.3010 <s> OKAY </s>
+-0.3010 <s> ON </s>
+-0.7782 <s> PINCH </s>
+-0.7782 <s> PINCH INDEX
+-0.7782 <s> PINCH MIDDLE
+-0.3010 <s> READY </s>
+-0.3010 <s> ROBOT </s>
+-0.3010 <s> SET TORQUE
+-0.3010 <s> THREE FINGER
+-0.3010 FINGER GRASP </s>
+-0.3010 FOUR FINGER GRASP
+-0.3010 PINCH INDEX </s>
+-0.3010 PINCH MIDDLE </s>
+-0.7782 SET TORQUE FULL
+-0.7782 SET TORQUE HALF
+-0.7782 SET TORQUE ZERO
+-0.3010 THREE FINGER </s>
+-0.3010 TORQUE FULL </s>
+-0.3010 TORQUE HALF </s>
+-0.3010 TORQUE ZERO </s>
+
+\end\
