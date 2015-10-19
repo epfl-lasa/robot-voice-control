@@ -23,7 +23,8 @@ class LanguageToMessageTranslator(object):
     def __init__(self):
 
         self.nl_command_topic = '/nl_command_parsed'
-        rospy.Subscriber(self.nl_command_topic, String, self.nl_command_callback)
+        rospy.Subscriber(self.nl_command_topic, String,
+                         self.nl_command_callback)
 
         # map of nl_command -> (topic, message)
         self._nl_command_map = {}
@@ -61,11 +62,15 @@ class LanguageToMessageTranslator(object):
 
         # Convert a list of dictionaries to a list of tuples.
         topics_and_types = [x.items()[0] for x in param['topics']]
+        rospy.loginfo('Available topics & types: {}'.format(topics_and_types))
 
         for (param_topic_name, topic_type_str) in topics_and_types:
             if not rospy.has_param(param_topic_name):
-                rospy.logerr('Expected parameter {}'.format(param_topic_name))
-            rospy.loginfo('Getting all command maps that go on topic {}'.format(
+                rospy.logerr('Missing ROS parameter {}'.format(
+                    param_topic_name))
+                continue  # Do not die here.
+
+            rospy.loginfo('Getting all commands for topic {}'.format(
                 param_topic_name))
             command_mapping = rospy.get_param(param_topic_name)
 
@@ -78,7 +83,8 @@ class LanguageToMessageTranslator(object):
                 param_topic_name, topic_type_str)
             self._publisher_map.update(pub_map)
 
-        rospy.loginfo('NL control running, listening to topic: {}.'.format(self.nl_command_topic))
+        rospy.loginfo('NL control running, listening to topic: {}.'.format(
+            self.nl_command_topic))
 
     def print_command_map(self, show_token=False):
         rospy.loginfo("All available commands:")
