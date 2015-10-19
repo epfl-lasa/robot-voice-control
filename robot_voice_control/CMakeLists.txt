@@ -6,7 +6,10 @@ project(robot_voice_control)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   pocketsphinx
+  roslaunch
 )
+
+roslaunch_add_file_check(launch/allegro_control.launch)
 
 
 ###################################

@@ -23,6 +23,7 @@
   <!--   <test_depend>gtest</test_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>pocketsphinx</run_depend>
+  <run_depend>audio_capture</run_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
