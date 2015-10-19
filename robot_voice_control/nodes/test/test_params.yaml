@@ -1,17 +1,21 @@
-# Parameter file for unit tests
+# Parameter file for unit tests. NOTE this is *not* loaded automatically (due
+# to the difficulty of unit testing with the ROS parameter server).
+#
+# Instead, load the parameters directly and use the python interpreter to
+# 'store' the resulting dictionary (i.e. rospy.get_param(-)) in code.
 
 test_topics:
   topics:
     - basic_topic : String
     - more/complicated/topic: Int32
-    - /global/topic : Float32
+    - not/a/global/topic : Float32
     - unknown_type : Unknown
   basic_topic:
     input: output
     input with spaces: output with spaces
   more/complicated/topic:
     input: 42
-  /global/topic:
+  not/a/global/topic:
     input: 3.14159
   unknown_type:
     input: does not matter

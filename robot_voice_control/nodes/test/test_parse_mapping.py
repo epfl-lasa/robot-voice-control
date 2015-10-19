@@ -26,22 +26,19 @@ class TestCase(unittest.TestCase):
         # just storing the resulting parameter dictionary here. This is the same
         # as loading the test_params.yaml file and then calling
         # rospy.get_param(/test_topic)
-        self.params = {'basic_topic':
-                           {'input': 'output',
-                            'input with spaces': 'output with spaces'},
+        self.params = {'basic_topic': {'input': 'output',
+                                       'input with spaces': 'output with spaces'},
                        'more': {'complicated': {'topic': {'input': 42}}},
+                       'not': {'a': {'global': {'topic': {'input': 3.14159}}}},
                        'topics': [{'basic_topic': 'String'},
                                   {'more/complicated/topic': 'Int32'},
-                                  {'/global/topic': 'Float32'},
+                                  {'not/a/global/topic': 'Float32'},
                                   {'unknown_type': 'Unknown'}],
                        'unknown_topic': {'input': 'does not matter'},
                        'unknown_type': {'input': 'does not matter'}}
 
         # Convert a list of dictionaries to a dictionary.
         self.topics_and_types = dict([x.items()[0] for x in self.params['topics']])
-
-        # This is a global topic, it is stored separately.
-        self.global_param = {'input': 3.14159}
 
     def testSetup(self):
         self.setupTranslator()
@@ -137,29 +134,6 @@ class TestCase(unittest.TestCase):
         self.assertIsNotNone(ret)
         self.assertEqual({}, ret)
 
-    def test_parse_command_map_global_topic(self):
-        topic = '/global/topic'
-        topic_type_str = self.topics_and_types[topic]
-        commands = self.global_param  # This is what would have been loaded.
-        ret = LanguageToMessageTranslator.parse_command_mapping(
-            topic, topic_type_str, commands)
-
-        self.assertIsNotNone(ret)
-        # Should have the same number of elements as commands.
-        self.assertEqual(len(commands), len(ret))
-
-        for cmd in commands:  # All commands are in the map
-            self.assertIn(cmd, ret)
-
-            # Inspect each tuple: (topic, message)
-            x = ret[cmd]
-            self.assertEqual(2, len(x))
-            self.assertEqual(topic, x[0])
-            self.assertIsInstance(x[1], genpy.Message)
-            self.assertIsInstance(x[1], std_msgs.msg.Float32)
-
-        self.assertEqual(3.14159, ret['input'][1].data)
-
     def test_get_publisher_string(self):
         topic = 'basic_topic'
         topic_type_str = self.topics_and_types[topic]
@@ -191,7 +165,7 @@ class TestCase(unittest.TestCase):
         self.assertEqual('std_msgs/Int32', pub.type)
 
     def test_get_publisher_float(self):
-        topic = '/global/topic'
+        topic = 'not/a/global/topic'
         topic_type_str = self.topics_and_types[topic]
 
         pub_map = LanguageToMessageTranslator.get_publisher(
@@ -219,4 +193,4 @@ class TestCase(unittest.TestCase):
 if __name__ == '__main__':
     rostest.rosrun('robot_voice_control', 'test_parse_mapping', TestCase)
 
-__author__ = 'felixd'
+__author__ = 'Felix Duvallet'
