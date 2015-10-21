@@ -4,7 +4,8 @@ Various tools to control the robot with your voice.
 
 ## message_control node
 
-Message-based NL control: This node Listens to the specified topic for parsed
+Message-based NL control: [This node] (robot_voice_control/nodes/message_control.py)
+listens to the specified topic for parsed
 natural language commands. The control of the robot is all done through topics: if
 it hears a particular command this node will output the given command token on 
 the particular topic. This supports various toke types: Strings, Ints, Floats, etc..
