@@ -2,7 +2,12 @@
 
 Various tools to control the robot with your voice.
 
-## message_control node
+So far the contents are:
+
+ - obot_voice_control: A ROS package, described below
+ - state_machine_template: A ROS package with some SMACH (state machine) code.
+
+### message_control node
 
 Message-based NL control:
 behaves essentially as a If-This-(Input)-Then-That-(Command),
@@ -25,11 +30,11 @@ Note that two commands cannot be shared between different topics (e.g,
 'stop' cannot map to different commands on two topics).
 
 
-## Useful package links:
+### Useful package links:
 
   - [Pocketsphinx](https://github.com/felixduvallet/pocketsphinx)
 
-## Creating a new language model:
+### Creating a new language model:
 
 See the README in [pocketsphinx](https://github.com/felixduvallet/pocketsphinx)
 for instructions on creating your own language model.
