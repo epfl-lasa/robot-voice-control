@@ -38,3 +38,6 @@ Note that two commands cannot be shared between different topics (e.g,
 
 See the README in [pocketsphinx](https://github.com/felixduvallet/pocketsphinx)
 for instructions on creating your own language model.
+
+
+[![Build Status](https://travis-ci.org/epfl-lasa/robot-voice-control.svg?branch=master)](https://travis-ci.org/epfl-lasa/robot-voice-control)
