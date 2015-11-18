@@ -1,0 +1,10 @@
+# Message-based natural language control of the kuka for a simple teaching task.
+
+allegro_hand_control:
+  # List of topics
+  topics:
+    - kuka_control/command : String
+  kuka_control/command:
+    okay robot stop: stop
+    okay robot start task: start
+    okay robot teach task: teach

@@ -1,0 +1,59 @@
+Language model created by QuickLM on Tue Nov 17 09:18:59 EST 2015
+Copyright (c) 1996-2010 Carnegie Mellon University and Alexander I. Rudnicky
+
+The model is in standard ARPA format, designed by Doug Paul while he was at MITRE.
+
+The code that was used to produce this language model is available in Open Source.
+Please visit http://www.speech.cs.cmu.edu/tools/ for more information
+
+The (fixed) discount mass is 0.5. The backoffs are computed using the ratio method.
+This model based on a corpus of 5 sentences and 10 words
+
+\data\
+ngram 1=10
+ngram 2=13
+ngram 3=13
+
+\1-grams:
+-1.0170 </s> -0.3010
+-1.0170 <s> -0.2478
+-1.7160 GO -0.2926
+-1.7160 HOME -0.2571
+-1.1139 OKAY -0.2663
+-1.1139 ROBOT -0.2571
+-1.7160 START -0.2840
+-1.4150 STOP -0.2571
+-1.4150 TASK -0.2571
+-1.7160 TEACH -0.2840
+
+\2-grams:
+-0.3979 <s> OKAY 0.0000
+-1.0000 <s> STOP 0.0000
+-0.3010 GO HOME 0.0000
+-0.3010 HOME </s> -0.3010
+-0.3010 OKAY ROBOT 0.0000
+-0.9031 ROBOT GO 0.0000
+-0.9031 ROBOT START 0.0000
+-0.9031 ROBOT STOP 0.0000
+-0.9031 ROBOT TEACH 0.0000
+-0.3010 START TASK 0.0000
+-0.3010 STOP </s> -0.3010
+-0.3010 TASK </s> -0.3010
+-0.3010 TEACH TASK 0.0000
+
+\3-grams:
+-0.3010 <s> OKAY ROBOT
+-0.3010 <s> STOP </s>
+-0.3010 GO HOME </s>
+-0.9031 OKAY ROBOT GO
+-0.9031 OKAY ROBOT START
+-0.9031 OKAY ROBOT STOP
+-0.9031 OKAY ROBOT TEACH
+-0.3010 ROBOT GO HOME
+-0.3010 ROBOT START TASK
+-0.3010 ROBOT STOP </s>
+-0.3010 ROBOT TEACH TASK
+-0.3010 START TASK </s>
+-0.3010 TEACH TASK </s>
+
+\end\
