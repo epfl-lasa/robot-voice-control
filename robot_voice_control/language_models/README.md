@@ -12,5 +12,8 @@ keep around.
 
 ## Creating a new language model:
 
+The website for generating a language model from a corpus is:
+http://www.speech.cs.cmu.edu/tools/lmtool-new.html
+
 See the README in [pocketsphinx](https://github.com/felixduvallet/pocketsphinx)
 for instructions on creating your own language model.
