@@ -40,7 +40,10 @@ class LanguageToMessageTranslator(object):
     string_to_type = defaultdict(lambda: None,
                                  [('String', std_msgs.msg.String),
                                   ('Int32', std_msgs.msg.Int32),
-                                  ('Float32', std_msgs.msg.Float32)])
+                                  ('UInt32', std_msgs.msg.UInt32),
+                                  ('Float32', std_msgs.msg.Float32),
+                                  ('Bool', std_msgs.msg.Bool),
+                                  ('Char', std_msgs.msg.Char)])
 
     def load_nl_command_map(self, control_param_name):
         """
