@@ -1,1 +1,1 @@
-- git: {local-name: pocketsphinx, uri: 'git@github.com:felixduvallet/pocketsphinx.git'}
+- git: {local-name: pocketsphinx, uri: 'https://github.com/felixduvallet/pocketsphinx.git'}
