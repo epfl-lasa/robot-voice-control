@@ -8,6 +8,7 @@ import std_msgs
 import genpy
 
 from robot_voice_control.nodes.message_control import LanguageToMessageTranslator
+from robot_voice_control.nodes.test.load_test_params import get_test_params
 
 
 class TestCase(unittest.TestCase):
@@ -22,20 +23,8 @@ class TestCase(unittest.TestCase):
     def setupParameters(self):
         self.control_param_name = '/test_topic'
 
-        # Since we cannot access the parameter server directly, fake it by
-        # just storing the resulting parameter dictionary here. This is the same
-        # as loading the test_params.yaml file and then calling
-        # rospy.get_param(/test_topic)
-        self.params = {'basic_topic': {'input': 'output',
-                                       'input with spaces': 'output with spaces'},
-                       'more': {'complicated': {'topic': {'input': 42}}},
-                       'not': {'a': {'global': {'topic': {'input': 3.14159}}}},
-                       'topics': [{'basic_topic': 'String'},
-                                  {'more/complicated/topic': 'Int32'},
-                                  {'not/a/global/topic': 'Float32'},
-                                  {'unknown_type': 'Unknown'}],
-                       'unknown_topic': {'input': 'does not matter'},
-                       'unknown_type': {'input': 'does not matter'}}
+        # Equivalent of rospy.get_param(/test_topic).
+        self.params = get_test_params()
 
         # Convert a list of dictionaries to a dictionary.
         self.topics_and_types = dict([x.items()[0] for x in self.params['topics']])
