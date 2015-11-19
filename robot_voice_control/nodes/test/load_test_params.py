@@ -3,7 +3,11 @@ Since we cannot access the parameter server directly in test code, fake it by
 just storing the resulting parameter dictionary here.
 
 This is the same as loading the test_params.yaml file into the param server and
-then calling rospy.get_param(/test_topic)
+then calling rospy.get_param(/test_topic).
+
+This file exists so the same test parameters can be used across different test
+cases.
+
 """
 
 
