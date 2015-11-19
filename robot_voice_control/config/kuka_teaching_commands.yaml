@@ -3,8 +3,9 @@
 allegro_hand_control:
   # List of topics
   topics:
-    - kuka_control/command : String
-  kuka_control/command:
-    okay robot stop: stop
-    okay robot start task: start
-    okay robot teach task: teach
+    - KUKA/TokenControl : String
+  KUKA/TokenControl:
+    okay robot stop: STOP_DEMONSTRATION
+    okay robot start task: unused
+    okay robot teach task: START_DEMONSTRATION
+    stop: STOP_DEMONSTRATION
