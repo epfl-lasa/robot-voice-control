@@ -2,7 +2,7 @@
 # to the difficulty of unit testing with the ROS parameter server).
 #
 # Instead, load the parameters directly and use the python interpreter to
-# 'store' the resulting dictionary (i.e. rospy.get_param(-)) in code.
+# 'store' the resulting dictionary (i.e. rospy.get_param('test_topics')).
 
 test_topics:
   topics:
@@ -10,14 +10,17 @@ test_topics:
     - more/complicated/topic: Int32
     - not/a/global/topic : Float32
     - unknown_type : Unknown
+  meta:  # NOTE: comment to disable the meta behavior
+    - okay robot list commands : list
+    - okay robot list commands : quit
   basic_topic:
-    input: output
-    input with spaces: output with spaces
+    - input: output
+    - input with spaces: output with spaces
   more/complicated/topic:
-    input: 42
+    - input: 42
   not/a/global/topic:
-    input: 3.14159
+    - input: 3.14159
   unknown_type:
-    input: does not matter
+    - input: does not matter
   unknown_topic:
-    input: does not matter
+    - input: does not matter
