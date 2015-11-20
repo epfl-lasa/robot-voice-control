@@ -8,4 +8,8 @@ allegro_hand_control:
     okay robot stop: STOP_DEMONSTRATION
     okay robot start task: unused
     okay robot teach task: START_DEMONSTRATION
+    okay robot teach: START_DEMONSTRATION
+    okay robot learn model: LEARNING
+    okay robot clear model: CLEAR
+    okay robot set target: SET_TARGET
     stop: STOP_DEMONSTRATION
