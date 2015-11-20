@@ -16,7 +16,7 @@ from collections import defaultdict
 
 import std_msgs
 from std_msgs.msg import String
-
+from sound_play.libsoundplay import SoundClient
 
 class LanguageToMessageTranslator(object):
 
@@ -31,6 +31,10 @@ class LanguageToMessageTranslator(object):
 
         # Map
         self._publisher_map = {}
+
+        # Sound client to speak back to you.
+        self._speak = True
+        self._sound_client = SoundClient()
         pass
 
     # This defaultdict maps a string representation of the message type
@@ -187,6 +191,10 @@ class LanguageToMessageTranslator(object):
 
             publisher = self._publisher_map[topic]
             publisher.publish(message)
+
+            if self._speak:  # Speak, replace underscore with space.
+                self._sound_client.say(message.data.replace('_', ' '))
+
         else:
             rospy.logwarn('Unknown NL command: {}'.format(command))
 

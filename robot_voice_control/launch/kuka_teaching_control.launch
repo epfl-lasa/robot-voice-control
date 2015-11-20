@@ -8,10 +8,19 @@
     <!-- If 1, start microphone -->
     <arg name="microphone" default="1"/>
 
+    <arg name="speak" default="1"/>
+
     <!-- Microphone (audio capture) -->
     <node name="microphone_capture" pkg="audio_capture" type="audio_capture"
           if="$(arg microphone)">
         <param name="bitrate" value="128"/>
+    </node>
+
+    <!-- Speaking (sound_play) -->
+    <node name="speaking"
+          pkg="sound_play"
+          type="soundplay_node.py"
+          if="$(arg speak)">
     </node>
 
     <!-- subscribe to /audio ROS messages -->
