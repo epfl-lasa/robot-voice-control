@@ -1,2 +1,2 @@
 - git: {local-name: pocketsphinx, uri: 'https://github.com/felixduvallet/pocketsphinx.git'}
-- git: {local-name: audio_common, uri: 'https://github.com/ros-drivers/audio_common.git'}
+- git: {local-name: audio_common, uri: 'https://github.com/felixduvallet/audio_common.git'}
