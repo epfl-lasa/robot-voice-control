@@ -33,8 +33,12 @@ class LanguageToMessageTranslator(object):
         self._publisher_map = {}
 
         # Sound client to speak back to you.
-        self._speak = True
         self._sound_client = SoundClient()
+        self._speak = True
+        if rospy.has_param('~speak'):
+            self._speak = bool(rospy.get_param('~speak'))
+        rospy.loginfo('Speech output: {}'.format(self._speak))
+
         pass
 
     # This defaultdict maps a string representation of the message type

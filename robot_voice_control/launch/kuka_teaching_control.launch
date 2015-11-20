@@ -45,6 +45,7 @@
           pkg="robot_voice_control"
           type="message_control.py"
           output="screen" >
+      <param name="speak" value="$(arg speak)" />
     </node>
 
 </launch>
