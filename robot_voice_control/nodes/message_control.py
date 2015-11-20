@@ -20,7 +20,7 @@ from sound_play.libsoundplay import SoundClient
 
 class LanguageToMessageTranslator(object):
 
-    def __init__(self):
+    def __init__(self, speak=True):
 
         self.nl_command_topic = '/nl_command_parsed'
         rospy.Subscriber(self.nl_command_topic, String,
@@ -34,9 +34,7 @@ class LanguageToMessageTranslator(object):
 
         # Sound client to speak back to you.
         self._sound_client = SoundClient()
-        self._speak = True
-        if rospy.has_param('~speak'):
-            self._speak = bool(rospy.get_param('~speak'))
+        self._speak = speak
         rospy.loginfo('Speech output: {}'.format(self._speak))
 
         pass
@@ -205,8 +203,11 @@ class LanguageToMessageTranslator(object):
 
 def run():
     rospy.init_node('message_control')
+    speak=True
+    if rospy.has_param('~speak'):
+        speak = bool(rospy.get_param('~speak'))
 
-    translator = LanguageToMessageTranslator()
+    translator = LanguageToMessageTranslator(speak)
 
     translator.load_nl_command_map('allegro_hand_control')
 
