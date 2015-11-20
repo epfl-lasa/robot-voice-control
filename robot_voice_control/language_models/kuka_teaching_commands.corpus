@@ -7,5 +7,6 @@ okay robot set target
 okay robot learn model
 okay robot clear model
 okay robot resume
+okay robot continue
 okay robot pause
 stop
