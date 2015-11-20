@@ -6,4 +6,6 @@ okay robot go home
 okay robot set target
 okay robot learn model
 okay robot clear model
+okay robot resume
+okay robot pause
 stop
