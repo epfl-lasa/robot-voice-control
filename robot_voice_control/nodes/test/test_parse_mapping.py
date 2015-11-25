@@ -54,23 +54,6 @@ class TestCase(unittest.TestCase):
             'topic_name', not_a_type, {'a': 'b'})
         self.assertIsNotNone(ret)
 
-    # Test string->msg type conversions.
-    def test_string_to_type_String(self):
-        ret = LanguageToMessageTranslator.string_to_type['String']
-        self.assertEqual(std_msgs.msg.String, ret)
-
-    def test_string_to_type_Float(self):
-        ret = LanguageToMessageTranslator.string_to_type['Float32']
-        self.assertEqual(std_msgs.msg.Float32, ret)
-
-    def test_string_to_type_Int(self):
-        ret = LanguageToMessageTranslator.string_to_type['Int32']
-        self.assertEqual(std_msgs.msg.Int32, ret)
-
-    def test_string_to_type_Other(self):
-        ret = LanguageToMessageTranslator.string_to_type['NotAType']
-        self.assertIsNone(ret)
-
     def test_setup_params(self):
         self.assertEqual(4, len(self.params['topics']))
 
@@ -188,7 +171,6 @@ class TestCase(unittest.TestCase):
 
         self.assertIsNotNone(pub_map)
         self.assertEqual(0, len(pub_map))
-
 
 if __name__ == '__main__':
     rostest.rosrun('robot_voice_control', 'test_parse_mapping', TestCase)

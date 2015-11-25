@@ -16,11 +16,11 @@ from collections import defaultdict
 
 import std_msgs
 from std_msgs.msg import String
-
+from sound_play.libsoundplay import SoundClient
 
 class LanguageToMessageTranslator(object):
 
-    def __init__(self):
+    def __init__(self, speak=True):
 
         self.nl_command_topic = '/nl_command_parsed'
         rospy.Subscriber(self.nl_command_topic, String,
@@ -31,6 +31,12 @@ class LanguageToMessageTranslator(object):
 
         # Map
         self._publisher_map = {}
+
+        # Sound client to speak back to you.
+        self._sound_client = SoundClient()
+        self._speak = speak
+        rospy.loginfo('Speech output: {}'.format(self._speak))
+
         pass
 
     # This defaultdict maps a string representation of the message type
@@ -40,7 +46,10 @@ class LanguageToMessageTranslator(object):
     string_to_type = defaultdict(lambda: None,
                                  [('String', std_msgs.msg.String),
                                   ('Int32', std_msgs.msg.Int32),
-                                  ('Float32', std_msgs.msg.Float32)])
+                                  ('UInt32', std_msgs.msg.UInt32),
+                                  ('Float32', std_msgs.msg.Float32),
+                                  ('Bool', std_msgs.msg.Bool),
+                                  ('Char', std_msgs.msg.Char)])
 
     def load_nl_command_map(self, control_param_name):
         """
@@ -184,14 +193,21 @@ class LanguageToMessageTranslator(object):
 
             publisher = self._publisher_map[topic]
             publisher.publish(message)
+
+            if self._speak:  # Speak, replace underscore with space.
+                self._sound_client.say(message.data.replace('_', ' '))
+
         else:
             rospy.logwarn('Unknown NL command: {}'.format(command))
 
 
 def run():
     rospy.init_node('message_control')
+    speak=True
+    if rospy.has_param('~speak'):
+        speak = bool(rospy.get_param('~speak'))
 
-    translator = LanguageToMessageTranslator()
+    translator = LanguageToMessageTranslator(speak)
 
     translator.load_nl_command_map('allegro_hand_control')
 

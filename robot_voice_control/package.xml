@@ -24,7 +24,8 @@
   <buildtool_depend>catkin</buildtool_depend>
   <run_depend>pocketsphinx</run_depend>
   <run_depend>audio_capture</run_depend>
-
+  <run_depend>audio_capture</run_depend>
+  <run_depend>sound_play</run_depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

@@ -1,0 +1,20 @@
+# Message-based natural language control of the kuka for a simple teaching task.
+
+allegro_hand_control:
+  # List of topics
+  topics:
+    - KUKA/TokenControl : String
+  KUKA/TokenControl:
+    okay robot stop: STOP_DEMONSTRATION
+    okay robot start task: unused
+    okay robot teach task: START_DEMONSTRATION
+    okay robot teach model: START_DEMONSTRATION
+    okay robot teach: START_DEMONSTRATION
+    okay robot learn model: LEARNING
+    okay robot learn: LEARNING
+    okay robot clear model: CLEAR
+    okay robot set target: SET_TARGET
+    okay robot pause: PAUSE
+    okay robot resume: CONTINUE
+    okay robot continue: CONTINUE
+    stop: STOP_DEMONSTRATION

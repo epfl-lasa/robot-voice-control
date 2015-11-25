@@ -4,7 +4,7 @@ Various tools to control the robot with your voice.
 
 So far the contents are:
 
- - obot_voice_control: A ROS package, described below
+ - robot_voice_control: A ROS package, described below
  - state_machine_template: A ROS package with some SMACH (state machine) code.
 
 ### message_control node
