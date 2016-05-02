@@ -26,11 +26,29 @@ class LanguageToMessageTranslator(object):
         rospy.Subscriber(self.nl_command_topic, String,
                          self.nl_command_callback)
 
-        # map of nl_command -> (topic, message)
+        # map of nl_command -> (topic, message) tuple.
+        # Example: three finger grasp -> (allegroHand/lib_cmd, grasp_3)
         self._nl_command_map = {}
 
-        # Map
+        # Map of topic -> rospy.Publisher.
+        # Example: allegroHand/lib_cmd ->
+        #          rospy.Publisher(allegroHand/lib_cmd, std_msgs.msg.String)
         self._publisher_map = {}
+
+        # Map of nl_command -> behavior_string. This is loaded from the
+        # configuration yaml file and only contains the commands the user wants.
+        # Example: 'okay robot list commands' -> 'list'
+        self._meta_commands = {}
+
+        # Definition of all the *possible* meta behaviors, map from
+        # behavior_string -> function. This is normally fixed.
+        # Example: 'list' -> self.print_command_map
+        self._meta_behavior = defaultdict(lambda: None)
+        self._meta_behavior['list'] = self.print_command_map
+        self._meta_behavior['quit'] = self.quit
+        self._meta_behavior['pause'] = self.pause
+        self._meta_behavior['resume'] = self.resume
+
         pass
 
     # This defaultdict maps a string representation of the message type
@@ -103,6 +121,27 @@ class LanguageToMessageTranslator(object):
         rospy.loginfo('NL control running, listening to topic: {}.'.format(
             self.nl_command_topic))
 
+    def process_meta_command(self, nl_command):
+
+        pass
+
+    @property
+    def available_meta_commands(self):
+        """
+        :return: List of all possible known meta commands.
+        """
+        return self._meta_behavior.keys()
+
+    @property
+    def enabled_meta_commands(self):
+        """
+        :return: List of the enabled meta commands (both user-enabled and known).
+        """
+        available = set(self._meta_behavior.keys())
+        user_specified = set(self._meta_commands.values())
+
+        return set.intersection(available, user_specified)
+
     def print_command_map(self, show_token=False):
         rospy.loginfo("All available commands:")
         for (command, (topic, message)) in self._nl_command_map.iteritems():
@@ -111,6 +150,10 @@ class LanguageToMessageTranslator(object):
             else:
                 rospy.loginfo('  {}'.format(command))
         rospy.loginfo('That is all.')
+
+    def quit(self):
+        rospy.loginfo('Received quit request, signaling shutdown.')
+        rospy.signal_shutdown(reason='Received quit request.')
 
     @classmethod
     def parse_command_mapping(cls, topic_name, topic_type_str, command_mapping):
@@ -170,8 +213,20 @@ class LanguageToMessageTranslator(object):
         ret[topic_name] = pub
         return ret
 
+    def pause(self):
+        # TODO set enabled = false
+        pass
+
+    def resume(self):
+        # TODO set enabled = true
+        pass
+
     def nl_command_callback(self, msg):
         command = msg.data
+
+        # TODO parse meta commands first
+
+        # TODO check enabled flag.
 
         if command in self._nl_command_map:
 

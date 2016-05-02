@@ -12,15 +12,16 @@ cases.
 
 
 def get_test_params():
-    return {'basic_topic': {'input': 'output',
-                            'input with spaces': 'output with spaces'},
-            'meta': [{'okay robot list commands': 'list'},
-                     {'okay robot list commands': 'quit'}],
-            'more': {'complicated': {'topic': {'input': 42}}},
-            'not': {'a': {'global': {'topic': {'input': 3.14159}}}},
+    return {'basic_topic': [{'input': 'output'},
+                            {'input with spaces': 'output with spaces'}],
+            'meta': [{'list commands': 'list'},
+                     {'quit': 'quit'},
+                     {'unknown meta command': 'unknown'}],
+            'more': {'complicated': {'topic': [{'input': 42}]}},
+            'not': {'a': {'global': {'topic': [{'input': 3.14159}]}}},
             'topics': [{'basic_topic': 'String'},
                        {'more/complicated/topic': 'Int32'},
                        {'not/a/global/topic': 'Float32'},
                        {'unknown_type': 'Unknown'}],
-            'unknown_topic': {'input': 'does not matter'},
-            'unknown_type': {'input': 'does not matter'}}
+            'unknown_topic': [{'input': 'does not matter'}],
+            'unknown_type': [{'input': 'does not matter'}]}
